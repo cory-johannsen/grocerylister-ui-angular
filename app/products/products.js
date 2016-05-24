@@ -10,10 +10,9 @@ angular.module('groceryLister.products', ['ngRoute'])
 }])
 
 .controller('ProductsCtrl', ['$scope', '$http', function($scope, $http) {
-  $http.jsonp("http://localhost:9000/product?callback=JSON_CALLBACK").
+  $http.get("http://localhost:9000/product?callback=JSON_CALLBACK").
     success(function(data, status, headers, config) {
-      console.log(data)
-        //$scope.products = data;
+      $scope.products = data._embedded.product;
     }).
     error(function(data, status, headers, config) {
         // log error
