@@ -8,7 +8,7 @@ describe('groceryLister.groceryLists module', function() {
 
     it('should ....', inject(function($controller) {
       //spec body
-      var groceryListCtrl = $controller('GroceryListCtrl');
+      var groceryListCtrl = $controller('GroceryListsCtrl');
       expect(groceryListCtrl).toBeDefined();
     }));
 

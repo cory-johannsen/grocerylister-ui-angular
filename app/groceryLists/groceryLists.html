@@ -1,0 +1,12 @@
+<h2>Grocery Lists</h2>
+
+<div ng-app="groceryLister" ng-controller="GroceryListsCtrl">
+
+    <input type="text" ng-model="groceryListName"/>
+    <button ng-click="addGroceryList()">Add</button>
+
+    <ul ng-repeat="groceryList in groceryLists | orderBy:'+name':false">
+        <li><a href="#/groceryList/">{{groceryList.name}}</a>
+        </li>
+    </ul>
+</div>

@@ -1,1 +1,25 @@
-<h2>Grocery List</h2>
+<h2>Current Grocery List</h2>
+
+<div ng-app="groceryLister" ng-controller="GroceryListsCtrl">
+
+    <label>{{groceryList.name}}</label>
+
+    <div class="currentGroceryListAssignedProducts">
+        <ul ng-repeat="product in groceryList.products | orderBy:'+name':false">
+            <li>{{product.name}}</li>
+        </ul>
+    </div>
+
+    <div class="currentGroceryListUnassignedProducts">
+        <label ng-repeat="product in productList | unassignedProducts:groceryList.products | orderBy:'+name':false">
+            <input
+                    type="checkbox"
+                    name="{{product.name}}"
+                    value="{{product.id}}"
+                    ng-checked="false"
+                    ng-click="assignProduct(product)"
+            > {{product.name}}
+        </label>
+
+    </div>
+</div>

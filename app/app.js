@@ -4,8 +4,8 @@
 angular.module('groceryLister', [
   'ngRoute',
   'groceryLister.products',
-  'groceryLister.groceryList',
-  'groceryLister.version'
+  'groceryLister.groceryLists',
+  'groceryLister.groceryList'
 ]).
 config(['$routeProvider', function($routeProvider) {
   $routeProvider.otherwise({redirectTo: '/products'});

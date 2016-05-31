@@ -2,8 +2,22 @@
 
 <div ng-app="groceryLister" ng-controller="ProductsCtrl">
 
-    <ul ng-repeat="product in products">
-        <li>[{{product.department}}] {{product.name}}</li>
-    </ul>
+    <input type="text" ng-model="productName"/>
+    <select ng-model="productDepartment">
+        <option ng-repeat="department in departments">{{department}}</option>
+    </select>
+    <button ng-click="addProduct()">Add</button>
+
+    <table>
+    <tr>
+        <th align="left"><button ng-click="sortProducts('department')">Department</button></th>
+        <th align="left"><button ng-click="sortProducts('name')">Product</button></th>
+    </tr>
+
+    <tr ng-repeat="product in products | orderBy:productSortBy:false">
+        <td>{{product.department}}</td>
+        <td>{{product.name}}</td>
+    </tr>
+    </table>
 
 </div>
