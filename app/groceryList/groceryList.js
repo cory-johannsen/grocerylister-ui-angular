@@ -28,16 +28,21 @@ angular.module('groceryLister.groceryList', ['ngRoute'])
 .controller('GroceryListCtrl',  ['$scope', '$http', function($scope, $http) {
   $scope.assignProduct = function(product) {
 
-    var response = $http({
-      method: 'GET',
+    console.log("URL: ", $scope.groceryList._links.products.href)
+    console.log("data: ", product._links.self.href)
+
+    $http({
+      method: 'POST',
       url: $scope.groceryList._links.products.href,
       headers: {
         'Content-Type': 'text/uri-list'
       },
-      data: $scope.assignedProducts
+      data: product._links.self.href
     }).then(
         function(data, status, headers, config) {
           console.log("POST successful adding product ", product.name, " to grocery list ", $scope.groceryList.name)
+          var i = $scope.availableProducts._embedded.product.indexOf(product)
+          $scope.availableProducts._embedded.product.splice(i, 1)
           loadGroceryList($http, $scope)
         },
         function(data, status, headers, config) {
