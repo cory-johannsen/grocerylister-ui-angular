@@ -5,14 +5,23 @@
     <label>{{groceryList.name}}</label>
 
     <div class="currentGroceryListAssignedProducts">
-        <ul ng-repeat="product in assignedProducts._embedded.product | orderBy:'+name':false">
-            <li>{{product.name}}</li>
-        </ul>
+        <table>
+            <tr ng-repeat="product in assignedProducts._embedded.product | orderBy:'+name':false">
+                <td>
+                    <input
+                            type="checkbox"
+                            name="{{product.name}}"
+                            ng-checked="false"
+                            ng-click="removeProduct(product)"
+                    > {{product.name}}
+                </td>
+            </tr>
+        </table>
     </div>
 
     <div class="currentGroceryListUnassignedProducts">
         <table>
-        <tr ng-repeat="product in availableProducts._embedded.product | orderBy:'+name':false">
+        <tr ng-repeat="product in availableProducts._embedded.product | unassignedProducts:assignedProducts | orderBy:'+name':false">
             <td>
                 <input
                         type="checkbox"

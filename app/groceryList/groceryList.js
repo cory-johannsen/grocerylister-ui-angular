@@ -10,15 +10,20 @@ angular.module('groceryLister.groceryList', ['ngRoute'])
 }])
 
 .filter('unassignedProducts', function() {
-  return function (products) {
+  return function (products, assignedProducts) {
     var availableProducts = []
 
     angular.forEach(products, function(product) {
-
-    //  if (assignedProducts.indexOf(product) == -1) {
-        availableProducts.push(product)
-    //  }
-
+      if (assignedProducts) {
+        var result = assignedProducts._embedded.product.filter(
+          function(assignedProduct) {
+            return assignedProduct._links.self.href === product._links.self.href
+          }
+        )
+        if (!result || result.length === 0) {
+          availableProducts.push(product)
+        }
+      }
     })
 
     return availableProducts
@@ -27,10 +32,6 @@ angular.module('groceryLister.groceryList', ['ngRoute'])
 
 .controller('GroceryListCtrl',  ['$scope', '$http', function($scope, $http) {
   $scope.assignProduct = function(product) {
-
-    console.log("URL: ", $scope.groceryList._links.products.href)
-    console.log("data: ", product._links.self.href)
-
     $http({
       method: 'POST',
       url: $scope.groceryList._links.products.href,
@@ -40,16 +41,44 @@ angular.module('groceryLister.groceryList', ['ngRoute'])
       data: product._links.self.href
     }).then(
         function(data, status, headers, config) {
-          console.log("POST successful adding product ", product.name, " to grocery list ", $scope.groceryList.name)
+          console.log("POST successful adding product", product.name, "to grocery list", $scope.groceryList.name)
           var i = $scope.availableProducts._embedded.product.indexOf(product)
           $scope.availableProducts._embedded.product.splice(i, 1)
           loadGroceryList($http, $scope)
         },
         function(data, status, headers, config) {
-          console.log("POST adding product ", product.name, " to grocery list ", $scope.groceryList.name, data)
+          console.log("POST failed adding product", product.name, "to grocery list", $scope.groceryList.name, data)
         }
     )
 
+  }
+
+  $scope.removeProduct = function(product) {
+    var assignedProducts = []
+    angular.forEach($scope.assignedProducts._embedded.product, function(assignedProduct) {
+      if (assignedProduct._links.self.href !== product._links.self.href) {
+        assignedProducts.push(assignedProduct._links.self.href)
+      }
+    })
+    var dataString = assignedProducts.join('\n');
+
+    $http({
+      method: 'PUT',
+      url: $scope.groceryList._links.products.href,
+      headers: {
+        'Content-Type': 'text/uri-list'
+      },
+      data: dataString
+    }).then(
+      function(data, status, headers, config) {
+        console.log("DELETE successful removing product", product.name, "from grocery list", $scope.groceryList.name)
+        loadGroceryList($http, $scope)
+        loadAvailableProducts($http, $scope)
+      },
+      function(data, status, headers, config) {
+        console.log("DELETE failed adding product", product.name, "from grocery list", $scope.groceryList.name, data)
+      }
+    )
   }
 
   loadGroceryList($http, $scope)
