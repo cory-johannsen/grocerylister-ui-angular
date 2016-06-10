@@ -10,10 +10,11 @@ angular.module('groceryLister.groceryLists', ['ngRoute'])
 }])
 
 .controller('GroceryListsCtrl',  ['$scope', '$http', function($scope, $http) {
+  const API_ENDPOINT = 'http://grocerylister.api.johannsen.cloud:9000'
   $scope.addGroceryList = function() {
     const groceryList = {name: $scope.groceryListName}
 
-    var response = $http.post("http://localhost:9000/grocerylist", groceryList)
+    var response = $http.post(API_ENDPOINT + "/grocerylist", groceryList)
     response.success(function(data, status, headers, config) {
     })
     response.error(function(data, status, headers, config) {
@@ -22,7 +23,7 @@ angular.module('groceryLister.groceryLists', ['ngRoute'])
     $scope.groceryLists.push(groceryList)
   }
 
-  $http.get("http://localhost:9000/grocerylist").
+  $http.get(API_ENDPOINT + "/grocerylist").
   success(function(data, status, headers, config) {
     $scope.groceryLists = data._embedded.groceryList
   }).

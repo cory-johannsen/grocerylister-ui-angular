@@ -17,6 +17,7 @@
     <tr ng-repeat="product in products | orderBy:productSortBy:false">
         <td>{{product.department}}</td>
         <td>{{product.name}}</td>
+        <td><button ng-click="deleteProduct(product)">X</button></td>
     </tr>
     </table>
 

@@ -6,7 +6,7 @@ angular.module('groceryLister', [
   'groceryLister.products',
   'groceryLister.groceryLists',
   'groceryLister.groceryList'
-]).
-config(['$routeProvider', function($routeProvider) {
+])
+.config(['$routeProvider', function($routeProvider) {
   $routeProvider.otherwise({redirectTo: '/products'});
 }]);

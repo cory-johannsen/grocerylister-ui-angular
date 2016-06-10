@@ -31,6 +31,7 @@ angular.module('groceryLister.groceryList', ['ngRoute'])
 })
 
 .controller('GroceryListCtrl',  ['$scope', '$http', function($scope, $http) {
+  const API_ENDPOINT = 'http://grocerylister.api.johannsen.cloud:9000'
   $scope.assignProduct = function(product) {
     $http({
       method: 'POST',
@@ -81,13 +82,13 @@ angular.module('groceryLister.groceryList', ['ngRoute'])
     )
   }
 
-  loadGroceryList($http, $scope)
-  loadAvailableProducts($http, $scope)
+  loadGroceryList($http, $scope, API_ENDPOINT)
+  loadAvailableProducts($http, $scope, API_ENDPOINT)
 
 }])
 
-function loadGroceryList(http, scope) {
-  http.get("http://localhost:9000/grocerylist?sort=lastModified&size=1")
+function loadGroceryList(http, scope, apiEndpoint) {
+  http.get(apiEndpoint + "/grocerylist?sort=lastModified&size=1")
       .then(
           function(data, status, headers, config) {
             scope.groceryList = data.data._embedded.groceryList[0]
@@ -109,8 +110,8 @@ function loadAssignedProducts(http, scope, groceryList) {
           })
 }
 
-function loadAvailableProducts(http, scope) {
-  http.get("http://localhost:9000/product")
+function loadAvailableProducts(http, scope, apiEndpoint) {
+  http.get(apiEndpoint + "/product")
       .then(
           function(data, status, headers, config) {
             scope.availableProducts = data.data
