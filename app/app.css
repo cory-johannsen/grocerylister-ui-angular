@@ -39,6 +39,7 @@ td {
 }
 
 .currentGroceryListAssignedProducts {
+  padding: 10px;
   border-top: 0.1em solid black;
   border-bottom: 0.1em solid black;
   border-left: 0.1em solid black;
@@ -46,6 +47,7 @@ td {
 }
 
 .currentGroceryListUnassignedProducts {
+  padding: 10px;
   border-top: 0.1em solid black;
   border-bottom: 0.1em solid black;
   border-left: 0.1em solid black;

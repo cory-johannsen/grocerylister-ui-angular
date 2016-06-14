@@ -43,12 +43,13 @@ angular.module('groceryLister.groceryList', ['ngRoute'])
     }).then(
         function(data, status, headers, config) {
           console.log("POST successful adding product", product.name, "to grocery list", $scope.groceryList.name)
-          var i = $scope.availableProducts._embedded.product.indexOf(product)
-          $scope.availableProducts._embedded.product.splice(i, 1)
-          loadGroceryList($http, $scope)
+          loadGroceryList($http, $scope, API_ENDPOINT)
+          loadAvailableProducts($http, $scope, API_ENDPOINT)
         },
         function(data, status, headers, config) {
           console.log("POST failed adding product", product.name, "to grocery list", $scope.groceryList.name, data)
+          loadGroceryList($http, $scope, API_ENDPOINT)
+          loadAvailableProducts($http, $scope, API_ENDPOINT)
         }
     )
 
@@ -73,11 +74,13 @@ angular.module('groceryLister.groceryList', ['ngRoute'])
     }).then(
       function(data, status, headers, config) {
         console.log("DELETE successful removing product", product.name, "from grocery list", $scope.groceryList.name)
-        loadGroceryList($http, $scope)
-        loadAvailableProducts($http, $scope)
+        loadGroceryList($http, $scope, API_ENDPOINT)
+        loadAvailableProducts($http, $scope, API_ENDPOINT)
       },
       function(data, status, headers, config) {
         console.log("DELETE failed adding product", product.name, "from grocery list", $scope.groceryList.name, data)
+        loadGroceryList($http, $scope, API_ENDPOINT)
+        loadAvailableProducts($http, $scope, API_ENDPOINT)
       }
     )
   }
@@ -111,7 +114,7 @@ function loadAssignedProducts(http, scope, groceryList) {
 }
 
 function loadAvailableProducts(http, scope, apiEndpoint) {
-  http.get(apiEndpoint + "/product")
+  http.get(apiEndpoint + "/product?size=1000")
       .then(
           function(data, status, headers, config) {
             scope.availableProducts = data.data

@@ -61,7 +61,7 @@ angular.module('groceryLister.products', [
   }])
 
 function loadProducts(http, scope, apiEndpoint) {
-  http.get(apiEndpoint + "/product")
+  http.get(apiEndpoint + "/product?size=1000")
     .then(
       function (data, status, headers, config) {
         const products = data.data._embedded.product

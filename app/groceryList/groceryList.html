@@ -20,6 +20,7 @@
     </div>
 
     <div class="currentGroceryListUnassignedProducts">
+        <label>Available Products:</label>
         <table>
         <tr ng-repeat="product in availableProducts._embedded.product | unassignedProducts:assignedProducts | orderBy:'+name':false">
             <td>
